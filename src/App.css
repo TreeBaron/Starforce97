@@ -1,0 +1,239 @@
+#root {
+  margin: 0 auto;
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  height: 100%;
+  width: 100%;
+
+  color: #eaf6ff;
+  background-color: #232528;
+}
+
+.rowS {
+  display: flex;
+  align-items: stretch;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.smallPadding {
+  margin: 15px;
+}
+
+.helpButton {
+  position: absolute;
+  left: 10px !important;
+  bottom: 5px !important;
+}
+
+.smallButton {
+  font-size: 11px !important;
+  line-height: 0.5rem !important;
+  margin-left: 1px !important;
+}
+
+.blackBackground {
+  background-color: black;
+}
+
+.colS {
+  width: 33vw !important;
+}
+
+.gameOverHeading {
+  color: #ffa400;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bolder;
+  font-size: 32px;
+  position: fixed;
+  top: 35vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999 !important;
+  text-align: center;
+  animation: flash 30s ease-in;
+}
+
+.launchButton {
+  background: linear-gradient(135deg, #009ffd, #2a2a72);
+  animation: glow 2s ease-in-out infinite alternate, fadeIn 3s ease-in-out;
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 1;
+  } /* Fully visible at the start and end */
+  50% {
+    opacity: 0;
+  } /* Fully invisible at the midpoint */
+}
+
+.blackBackground {
+  background-color: black;
+}
+
+.shipExploding {
+  transform: rotate(90deg);
+}
+
+.victoryImage {
+  position: absolute;
+  width: 50vw !important;
+  height: 100vh !important;
+  left: 50%;
+  top: 0px;
+  z-index: 1;
+}
+
+.victoryHeading {
+  color: #ffa400;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bolder;
+  font-size: 32px;
+  position: fixed;
+  top: 35vh;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999 !important;
+  text-align: center;
+  animation: flash 30s ease-in;
+}
+
+.victoryShipLog {
+  position: absolute;
+  left: 25% !important;
+  top: 60% !important;
+  transform: translate(-50%, -50%);
+  z-index: 9999999 !important;
+  text-align: left;
+  display: flex;
+  padding: auto;
+  margin: auto;
+  max-width: 33vw;
+  font-size: 16px;
+}
+
+.primaryBackground {
+  background-color: #232528 !important;
+}
+
+.secondaryBackground {
+  background-color: #2a2a72 !important;
+}
+
+.tertiaryBackground {
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  animation: gradientBackground 10s ease infinite;
+  background-size: 400% 400%;
+}
+
+.color1 {
+  color: #eaf6ff !important;
+}
+
+.color2 {
+  color: #009ffd !important;
+}
+
+.color3 {
+  color: #ffa400 !important;
+}
+
+.hiddenImages {
+  position: absolute;
+  scale: 0.1;
+  left: -30000px;
+  z-index: -100;
+}
+
+.mainTitleText {
+  font-size: 4rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6);
+  animation: glow 2s ease-in-out infinite alternate, fadeIn 3s ease-in-out;
+}
+
+.titleScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 400% 400%;
+  animation: gradientBackground 10s ease infinite;
+}
+
+/* Background gradient animation */
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Glow effect animation */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+      0 0 20px rgba(255, 255, 255, 0.6);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1),
+      0 0 30px rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Fade-in effect */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*Global Backgrounds*/
+.colorFadeBackgroundPrimary {
+  background: linear-gradient(180deg, #009ffd, black, black);
+  background-size: 300% 300%;
+  animation: colorFade 5s ease infinite;
+  z-index: -1;
+}
+
+.colorFadeBackgroundSecondary {
+  background: linear-gradient(180deg, purple, black, black);
+  background-size: 300% 300%;
+  animation: colorFade 5s ease infinite;
+  z-index: -1;
+}
+
+@keyframes colorFade {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  33% {
+    background-position: 50% 50%;
+  }
+  66% {
+    background-position: 100% 50%;
+  }
+}

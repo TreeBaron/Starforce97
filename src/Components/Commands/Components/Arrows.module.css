@@ -1,0 +1,14 @@
+.wrapper {
+  font-size: 1rem;
+}
+
+.myButton {
+  padding-left: 1vw !important;
+  position: relative;
+  z-index: 10000;
+}
+
+.noMarginNoPadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}

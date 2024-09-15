@@ -1,0 +1,56 @@
+.textClass {
+  font-family: monospace;
+  font-size: 11px;
+
+  /* Zoom out for large screens */
+  @media screen and (min-width: 1248px) {
+    font-size: 11px;
+  }
+
+  /* Zoom for medium-sized screens */
+  @media screen and (max-width: 1040px) {
+    font-size: 10px;
+  }
+
+  /* Zoom for medium-sized screens */
+  @media screen and (max-width: 936px) {
+    font-size: 10px;
+  }
+
+  /* Zoom for small screens */
+  @media screen and (max-width: 838px) {
+    font-size: 9px;
+  }
+
+  line-height: 2;
+  height: 49vh;
+  width: 30vw;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: right !important;
+  position: relative;
+  z-index: 10000;
+
+  overflow: auto !important;
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  resize: none;
+
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    #130e34,
+    #232528
+  ); /* Base gradient color */
+  padding: 20px;
+  border-radius: 20px; /* Rounded corners to simulate CRT curvature */
+  box-shadow: 0 0 15px rgba(0, 159, 253, 0.6); /* Blue glow for CRT effect */
+  overflow: hidden;
+  border: 6px solid #333; /* Simulates the monitor frame */
+
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+
+  user-select: none; /* Prevent text selection */
+  cursor: default; /* Change cursor to default */
+  outline: none; /* Remove the default outline */
+}

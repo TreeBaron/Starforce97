@@ -1,0 +1,99 @@
+.textClass {
+  font-family: monospace;
+  font-size: 1vw;
+
+  /* Zoom out for large screens */
+  @media screen and (min-width: 1248px) {
+    font-size: 1vw;
+  }
+
+  /* Zoom for medium-sized screens */
+  @media screen and (max-width: 1040px) {
+    font-size: 0.9vw;
+  }
+
+  /* Zoom for medium-sized screens */
+  @media screen and (max-width: 936px) {
+    font-size: 0.9vw;
+  }
+
+  /* Zoom for small screens */
+  @media screen and (max-width: 838px) {
+    font-size: 0.9vw;
+  }
+
+  line-height: 1.5;
+  white-space: pre;
+  min-width: 33vw;
+  min-height: 50vh;
+  resize: none;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding-left: 7vw;
+  padding-top: 2vh;
+  color: white !important;
+  border-radius: 20px; /* Rounded corners to simulate CRT curvature */
+  border: 6px solid #333; /* Simulates the monitor frame */
+  user-select: none; /* Prevent text selection */
+  cursor: default; /* Change cursor to default */
+  outline: none; /* Remove the default outline */
+}
+
+.container {
+  position: relative;
+  min-width: 33vw;
+  min-height: 50vh;
+}
+
+.radarSweepSecondary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(191, 0, 255, 0.05) 0%,
+    /* Bright green */ rgba(0, 0, 0, 0) 100% /* Transparent black */
+  );
+  transform-origin: left;
+  animation: sweepLeftToRight 3s linear infinite; /* Adjust duration as needed */
+  z-index: 2; /* Ensures the radar sweep is above the textarea */
+  clip-path: inset(
+    0 100% 0 0
+  ); /* Clip the sweep to make it look like it's sweeping */
+}
+
+.radarSweepPrimary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(0, 255, 229, 0.05) 0%,
+    /* Bright green */ rgba(0, 0, 0, 0) 100% /* Transparent black */
+  );
+  transform-origin: left;
+  animation: sweepLeftToRight 3s linear infinite; /* Adjust duration as needed */
+  z-index: 2; /* Ensures the radar sweep is above the textarea */
+  clip-path: inset(
+    0 100% 0 0
+  ); /* Clip the sweep to make it look like it's sweeping */
+}
+
+@keyframes sweepLeftToRight {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 1;
+  }
+  50% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 -100% 0 0); /* Ensures sweep moves left to right */
+    opacity: 0;
+  }
+}

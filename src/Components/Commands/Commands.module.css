@@ -1,0 +1,110 @@
+.textClass {
+  font-family: monospace;
+  font-size: 11px;
+  height: 38vh;
+  width: 39vw;
+  padding-left: 0 !important;
+  margin-left: -3vw !important;
+}
+
+.wrapper {
+  height: 40vh !important;
+  width: 39vw;
+  padding-left: 0 !important;
+  font-size: 11px;
+  padding-top: 5px;
+  margin-left: -3vw !important;
+
+  background: linear-gradient(180deg, #232528, #2a2a72);
+
+  border-left: 6px solid #333;
+  border-right: 6px solid #333;
+  border-top: 6px solid #333;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.controlClass {
+  /* Zoom out for large screens */
+  @media screen and (min-width: 1248px) {
+    zoom: 1; /* Zoom in for larger screens */
+  }
+
+  /* Zoom for medium-sized screens */
+  @media screen and (max-width: 1040px) {
+    zoom: 0.8; /* Slightly zoom out for smaller screens */
+  }
+
+  /* Zoom for medium-sized screens */
+  @media screen and (max-width: 936px) {
+    zoom: 0.6; /* Slightly zoom out for smaller screens */
+  }
+
+  /* Zoom for small screens */
+  @media screen and (max-width: 838px) {
+    zoom: 0.6; /* More zoom out for tablets */
+  }
+}
+
+.downScale {
+  zoom: 0.8;
+}
+
+.noMarginNoPadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.marginTop {
+  margin-top: 15px;
+}
+
+.waitButton {
+  font-size: 11px;
+}
+
+.marginTopSmall {
+  margin-top: 3px;
+}
+
+.myButton {
+  position: relative;
+  z-index: 10000;
+}
+
+.torpText {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.torpButton {
+  font-size: 11px !important;
+}
+
+.laserButton {
+  margin-bottom: 2px;
+  margin-top: 2px;
+  font-size: 11px !important;
+}
+
+.jump {
+  width: 100% !important;
+}
+
+.arrowContainer {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  max-width: 50px;
+  max-height: 50px;
+  margin-bottom: 10px;
+}
+
+.marginRight {
+  margin-right: 2px;
+}
+
+.marginLeft {
+  margin-left: 2px;
+}
