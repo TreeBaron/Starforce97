@@ -2,6 +2,7 @@
   "name": "starforce97",
   "private": true,
   "version": "0.0.1",
+  "homepage": "https://treebaron.github.io/Starforce97/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
