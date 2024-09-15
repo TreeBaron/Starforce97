@@ -106,7 +106,7 @@ export const fireTorpedo = (starship: Starship, degrees: number) => {
 export const onDeath = (starship: Starship, world: World) => {
   starship.IsDead = true;
   if (!starship.IsPlayer) {
-    world.GetPlayer().DisplayScreen = "src/assets/shipexploding.gif";
+    world.GetPlayer().DisplayScreen = shipExploding;
   }
 };
 
