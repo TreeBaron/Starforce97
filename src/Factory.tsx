@@ -317,7 +317,7 @@ export const getWorld = (
     world.GameObjects.push({
       Sector: getRandomVector2(),
       Quadrant: getRandomVector2(),
-      Image: `src/assets/planet (${i}).png`,
+      Image: `/Starforce97/dist/src/assets/planet (${i}).png`,
       Name: ` O `,
       Detail: planetNames[i - 1],
       Description:
@@ -366,7 +366,7 @@ export const getWorld = (
         Y: 5 + randomIntFromInterval(-1, 1),
       } as Vector2,
       Quadrant: populatedPlanetLocations[i - 1],
-      Image: `src/assets/planet${i}.png`,
+      Image: `/Starforce97/dist/src/assets/planet${i}.png`,
       Name: `(+)`,
       Detail: populatedPlanetNames[i - 1],
       Description:
@@ -392,7 +392,7 @@ export const getWorld = (
       X: 6,
       Y: 10,
     } as Vector2,
-    Image: `src/assets/ancientstation.jpeg`,
+    Image: `/Starforce97/dist/src/assets/ancientstation.jpeg`,
     Name: ` . `,
     Detail: "Ancient Station",
     Description: null,
@@ -409,14 +409,22 @@ export const getWorld = (
   // get all planets and cache their images so the visuals load faster
   let planets = world.GameObjects.filter((go) => go.Type === "Planet");
   world.CachedImagePaths = planets.map((x) => x.Image);
-  world.CachedImagePaths.push(`"src/assets/victoryimage.jpeg`);
-  world.CachedImagePaths.push("src/assets/happyorphans.jpeg");
-  world.CachedImagePaths.push("src/assets/starbackground.png");
-  world.CachedImagePaths.push("src/assets/playershipexploding.gif");
-  world.CachedImagePaths.push("src/assets/starfield.gif");
-  world.CachedImagePaths.push("src/assets/shipexploding.gif");
-  world.CachedImagePaths.push("src/assets/enemyshiphitbylaser.gif");
-  world.CachedImagePaths.push("src/assets/playershiphitbylaser.gif");
+  world.CachedImagePaths.push(`/Starforce97/dist/src/assets/victoryimage.jpeg`);
+  world.CachedImagePaths.push("/Starforce97/dist/src/assets/happyorphans.jpeg");
+  world.CachedImagePaths.push(
+    "/Starforce97/dist/src/assets/starbackground.png"
+  );
+  world.CachedImagePaths.push(
+    "/Starforce97/dist/src/assets/playershipexploding.gif"
+  );
+  world.CachedImagePaths.push("/Starforce97/dist/src/assets/starfield.gif");
+  world.CachedImagePaths.push("/Starforce97/dist/src/assets/shipexploding.gif");
+  world.CachedImagePaths.push(
+    "/Starforce97/dist/src/assets/enemyshiphitbylaser.gif"
+  );
+  world.CachedImagePaths.push(
+    "/Starforce97/dist/src/assets/playershiphitbylaser.gif"
+  );
 
   return world;
 };
