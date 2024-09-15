@@ -317,7 +317,7 @@ export const getWorld = (
     world.GameObjects.push({
       Sector: getRandomVector2(),
       Quadrant: getRandomVector2(),
-      Image: `src/assets/planets/planet (${i}).png`,
+      Image: `src/assets/planet (${i}).png`,
       Name: ` O `,
       Detail: planetNames[i - 1],
       Description:
@@ -366,7 +366,7 @@ export const getWorld = (
         Y: 5 + randomIntFromInterval(-1, 1),
       } as Vector2,
       Quadrant: populatedPlanetLocations[i - 1],
-      Image: `src/assets/planets/earthlike/planet${i}.png`,
+      Image: `src/assets/planet${i}.png`,
       Name: `(+)`,
       Detail: populatedPlanetNames[i - 1],
       Description:
@@ -392,7 +392,7 @@ export const getWorld = (
       X: 6,
       Y: 10,
     } as Vector2,
-    Image: `src/assets/planets/earthlike/ancientstation.jpeg`,
+    Image: `src/assets/ancientstation.jpeg`,
     Name: ` . `,
     Detail: "Ancient Station",
     Description: null,
