@@ -7,6 +7,49 @@ import {
   Torpedo,
 } from "./TypeDefinitions";
 import { Planet } from "./TypeDefinitions";
+import planet1 from "./assets/planet (1).png";
+import planet2 from "./assets/planet (2).png";
+import planet3 from "./assets/planet (3).png";
+import planet4 from "./assets/planet (4).png";
+import planet5 from "./assets/planet (5).png";
+import planet6 from "./assets/planet (6).png";
+import planet7 from "./assets/planet (7).png";
+import planet8 from "./assets/planet (8).png";
+import planet9 from "./assets/planet (9).png";
+import planet10 from "./assets/planet (10).png";
+import planet11 from "./assets/planet (11).png";
+import planet12 from "./assets/planet (12).png";
+import planet13 from "./assets/planet (13).png";
+import planet14 from "./assets/planet (14).png";
+import planet15 from "./assets/planet (15).png";
+import planet16 from "./assets/planet (16).png";
+import planet17 from "./assets/planet (17).png";
+import planet18 from "./assets/planet (18).png";
+import planet19 from "./assets/planet (19).png";
+import planet20 from "./assets/planet (20).png";
+import planet21 from "./assets/planet (21).png";
+import planet22 from "./assets/planet (22).png";
+import planet23 from "./assets/planet (23).png";
+import planet24 from "./assets/planet (24).png";
+import planet25 from "./assets/planet (25).png";
+import planet26 from "./assets/planet (26).png";
+import planet27 from "./assets/planet (27).png";
+import planet28 from "./assets/planet (28).png";
+import eplanet1 from "./assets/planet1.png";
+import eplanet2 from "./assets/planet2.png";
+import eplanet3 from "./assets/planet3.png";
+import eplanet4 from "./assets/planet4.png";
+import eplanet5 from "./assets/planet5.png";
+import eplanet6 from "./assets/planet6.png";
+import ancientStationImage from "./assets/ancientstation.jpeg";
+import victoryImage from "./assets/victoryimage.jpeg";
+import happyOrphans from "./assets/happyorphans.jpeg";
+import starBackground from "./assets/starbackground.png";
+import playerShipExploding from "./assets/playershipexploding.gif";
+import starField from "./assets/starfield.gif";
+import shipExploding from "./assets/shipexploding.gif";
+import enemyShipHitByLaser from "./assets/enemyshiphitbylaser.gif";
+import playerShipHitByLaser from "./assets/playershiphitbylaser.gif";
 
 export const randomIntFromInterval = (min: number, max: number) => {
   // min and max included
@@ -313,11 +356,42 @@ export const getWorld = (
     "",
   ];
 
+  const planetImages = [
+    planet1,
+    planet2,
+    planet3,
+    planet4,
+    planet5,
+    planet6,
+    planet7,
+    planet8,
+    planet9,
+    planet10,
+    planet11,
+    planet12,
+    planet13,
+    planet14,
+    planet15,
+    planet16,
+    planet17,
+    planet18,
+    planet19,
+    planet20,
+    planet21,
+    planet22,
+    planet23,
+    planet24,
+    planet25,
+    planet26,
+    planet27,
+    planet28,
+  ];
+
   for (let i = 1; i <= 28 / difficulty; i++) {
     world.GameObjects.push({
       Sector: getRandomVector2(),
       Quadrant: getRandomVector2(),
-      Image: `src/assets/planet (${i}).png`,
+      Image: planetImages[i - 1],
       Name: ` O `,
       Detail: planetNames[i - 1],
       Description:
@@ -359,6 +433,15 @@ export const getWorld = (
     { X: 8, Y: 8 } as Vector2,
   ];
 
+  const ePlanetImages = [
+    eplanet1,
+    eplanet2,
+    eplanet3,
+    eplanet4,
+    eplanet5,
+    eplanet6,
+  ];
+
   for (let i = 1; i <= 6; i++) {
     world.GameObjects.push({
       Sector: {
@@ -366,7 +449,7 @@ export const getWorld = (
         Y: 5 + randomIntFromInterval(-1, 1),
       } as Vector2,
       Quadrant: populatedPlanetLocations[i - 1],
-      Image: `src/assets/planet${i}.png`,
+      Image: ePlanetImages[i - 1],
       Name: `(+)`,
       Detail: populatedPlanetNames[i - 1],
       Description:
@@ -392,7 +475,7 @@ export const getWorld = (
       X: 6,
       Y: 10,
     } as Vector2,
-    Image: `src/assets/ancientstation.jpeg`,
+    Image: ancientStationImage,
     Name: ` . `,
     Detail: "Ancient Station",
     Description: null,
@@ -409,14 +492,14 @@ export const getWorld = (
   // get all planets and cache their images so the visuals load faster
   let planets = world.GameObjects.filter((go) => go.Type === "Planet");
   world.CachedImagePaths = planets.map((x) => x.Image);
-  world.CachedImagePaths.push(`src/assets/victoryimage.jpeg`);
-  world.CachedImagePaths.push("src/assets/happyorphans.jpeg");
-  world.CachedImagePaths.push("src/assets/starbackground.png");
-  world.CachedImagePaths.push("src/assets/playershipexploding.gif");
-  world.CachedImagePaths.push("src/assets/starfield.gif");
-  world.CachedImagePaths.push("src/assets/shipexploding.gif");
-  world.CachedImagePaths.push("src/assets/enemyshiphitbylaser.gif");
-  world.CachedImagePaths.push("src/assets/playershiphitbylaser.gif");
+  world.CachedImagePaths.push(victoryImage);
+  world.CachedImagePaths.push(happyOrphans);
+  world.CachedImagePaths.push(starBackground);
+  world.CachedImagePaths.push(playerShipExploding);
+  world.CachedImagePaths.push(starField);
+  world.CachedImagePaths.push(shipExploding);
+  world.CachedImagePaths.push(enemyShipHitByLaser);
+  world.CachedImagePaths.push(playerShipHitByLaser);
 
   return world;
 };
