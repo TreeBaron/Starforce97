@@ -266,9 +266,13 @@ export const getWorld = (
         this.SetWorld({ ...this });
       }
 
-      player.ShipLog.push(`[END TURN]`);
-      player.ShipLog.push("");
-      player.ShipLog.push("[BEGIN TURN]");
+      if (!player.IsDead) {
+        player.ShipLog.push(`[END TURN]`);
+        player.ShipLog.push("");
+        player.ShipLog.push("[BEGIN TURN]");
+      } else {
+        player.ShipLog.push("[GAME OVER]");
+      }
     },
     SetWorld: setWorld,
   } as World;
