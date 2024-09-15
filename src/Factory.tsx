@@ -657,9 +657,9 @@ const takeDamage = function (ourShip: Starship, damageDealer: Starship) {
   }
 
   if (damageDealer.IsPlayer && damageDealer.DisplayScreen === null) {
-    damageDealer.DisplayScreen = "src/assets/enemyshiphitbylaser.gif";
+    damageDealer.DisplayScreen = enemyShipHitByLaser;
   } else if (ourShip.IsPlayer && ourShip.DisplayScreen === null) {
-    ourShip.DisplayScreen = "src/assets/playershiphitbylaser.gif";
+    ourShip.DisplayScreen = playerShipHitByLaser;
   }
 };
 
