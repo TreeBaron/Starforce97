@@ -22,7 +22,7 @@ export type Starship = {
   CanFireTorpedoes: boolean;
   CanFireLasers: boolean;
   Update: (this: Starship, world: World) => void;
-  TakeDamage: (this: Starship, damageDealer: Starship) => void;
+  TakeDamage: (this: Starship, damageDealer: Starship, world: World) => void;
   AIData?: any;
   CanDetectShip: (
     this: Starship,

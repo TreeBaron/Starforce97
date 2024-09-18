@@ -118,7 +118,7 @@ div > div > .shipDisplay {
 }
 
 .modal {
-  z-index: 10 !important;
+  z-index: 9999 !important;
   font-size: 12px !important;
 }
 

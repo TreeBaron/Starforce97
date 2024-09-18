@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Starship, World } from "./TypeDefinitions";
 import { Commands } from "./Components/Commands/Commands";
@@ -18,6 +18,10 @@ function App() {
   const [globalUpdate, setGlobalUpdate] = useState<boolean>(false);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
   const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    setGlobalUpdate(!globalUpdate);
+  }, [world]);
 
   if (world?.GetPlayer().IsDead) {
     return (

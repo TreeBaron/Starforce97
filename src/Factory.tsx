@@ -589,7 +589,11 @@ const canDetectShip = function (
   }
 };
 
-const takeDamage = function (ourShip: Starship, damageDealer: Starship) {
+const takeDamage = function (
+  ourShip: Starship,
+  damageDealer: Starship,
+  world: World
+) {
   let chance = 6;
 
   if (damageDealer.IsPlayer) {
@@ -611,6 +615,12 @@ const takeDamage = function (ourShip: Starship, damageDealer: Starship) {
     damageDealer.ShipLog.push(
       `[KILL] - Direct hit on their fusion core! ${ourShip.Name} has been destroyed.`
     );
+
+    if (damageDealer.IsPlayer) {
+      world.ClearDisplayScreen = false;
+      damageDealer.DisplayScreen = shipExploding;
+    }
+
     ourShip.IsDead = true;
   }
 
@@ -656,7 +666,8 @@ const takeDamage = function (ourShip: Starship, damageDealer: Starship) {
     damageDealer.ShipLog.push(`Their laser weapon system is damaged.`);
   }
 
-  if (damageDealer.IsPlayer && damageDealer.DisplayScreen === null) {
+  if (damageDealer.IsPlayer) {
+    world.ClearDisplayScreen = false;
     damageDealer.DisplayScreen = enemyShipHitByLaser;
   } else if (ourShip.IsPlayer && ourShip.DisplayScreen === null) {
     ourShip.DisplayScreen = playerShipHitByLaser;
@@ -892,7 +903,7 @@ const aiUpdateFunction = function (ourShip: Starship, world: World) {
     truthTable.playerInLaserRange &&
     ourShip.CanFireLasers
   ) {
-    player.TakeDamage(ourShip);
+    player.TakeDamage(ourShip, world);
     if (printDebug) {
       console.log("Firing lasers at nearby player.");
     }
@@ -1051,8 +1062,12 @@ export const getPlayership = (quadrant: Vector2, sector: Vector2) => {
     CanSRS: true,
     CanFireTorpedoes: true,
     CanFireLasers: true,
-    TakeDamage: function localTakeDamage(this: Starship, enemy: Starship) {
-      takeDamage(this, enemy);
+    TakeDamage: function localTakeDamage(
+      this: Starship,
+      enemy: Starship,
+      world: World
+    ) {
+      takeDamage(this, enemy, world);
     },
     Update: function localUpdate(this: Starship, world: World) {
       playerUpdateFunction(this, world);
@@ -1096,8 +1111,12 @@ export const getKronShip = (
     CanSRS: true,
     CanFireTorpedoes: true,
     CanFireLasers: true,
-    TakeDamage: function localTakeDamage(this: Starship, enemy: Starship) {
-      takeDamage(this, enemy);
+    TakeDamage: function localTakeDamage(
+      this: Starship,
+      enemy: Starship,
+      world: World
+    ) {
+      takeDamage(this, enemy, world);
     },
     Update: function localUpdate(this: Starship, world: World) {
       aiUpdateFunction(this, world);
