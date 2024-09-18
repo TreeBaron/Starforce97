@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ShipStatuses } from "../../TypeDefinitions";
 import { Starship } from "../../TypeDefinitions";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
@@ -41,6 +41,9 @@ export function StarshipDisplay({
   const player = world.GetPlayer();
   if (player === null) return;
   const [maxTorpedoes, setMaxTorpedoes] = useState<number>(player.Torpedoes);
+
+  // This will never happen, but makes the compiler happy
+  if (maxTorpedoes == -1) setMaxTorpedoes(1);
 
   let planet = world.GameObjects.find(
     (x: any) =>

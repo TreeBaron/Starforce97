@@ -8,11 +8,7 @@ export interface RadarLogProps {
   setGlobalUpdate: (value: boolean) => void;
 }
 
-export function RadarLog({
-  world,
-  globalUpdate,
-  setGlobalUpdate,
-}: RadarLogProps) {
+export function RadarLog({ world }: RadarLogProps) {
   let playerShip = world.GetPlayer();
   const [text, setText] = useState<string>("");
 

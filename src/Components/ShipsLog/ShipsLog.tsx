@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { World, Starship } from "../../TypeDefinitions";
+import { World } from "../../TypeDefinitions";
 import classes from "./ShipsLog.module.css";
 
 export interface ShipLogProps {
@@ -8,11 +8,7 @@ export interface ShipLogProps {
   setGlobalUpdate: (value: boolean) => void;
 }
 
-export function ShipLog({
-  world,
-  globalUpdate,
-  setGlobalUpdate,
-}: ShipLogProps) {
+export function ShipLog({ world }: ShipLogProps) {
   const [text, setText] = useState<string>("");
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import {
   OverlayTrigger,
 } from "react-bootstrap";
 import { Arrows } from "./Components/Arrows";
-import { ShipStatuses, Starship, Vector2, World } from "../../TypeDefinitions";
+import { ShipStatuses, Vector2, World } from "../../TypeDefinitions";
 import classes from "./Commands.module.css";
 import angleImage from "../../assets/angleImage.png";
 import { equalVectors, fireTorpedo, getDistance } from "../../Factory";
