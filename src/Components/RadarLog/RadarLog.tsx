@@ -4,9 +4,15 @@ import classes from "./RadarLog.module.css";
 
 export interface RadarLogProps {
   world: World;
+  globalUpdate: boolean;
+  setGlobalUpdate: (value: boolean) => void;
 }
 
-export function RadarLog({ world }: RadarLogProps) {
+export function RadarLog({
+  world,
+  globalUpdate,
+  setGlobalUpdate,
+}: RadarLogProps) {
   let playerShip = world.GetPlayer();
   const [text, setText] = useState<string>("");
 

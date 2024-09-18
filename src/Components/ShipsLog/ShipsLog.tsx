@@ -4,18 +4,22 @@ import classes from "./ShipsLog.module.css";
 
 export interface ShipLogProps {
   world: World;
-  player: Starship | null;
+  globalUpdate: boolean;
+  setGlobalUpdate: (value: boolean) => void;
 }
 
-export function ShipLog({ world, player }: ShipLogProps) {
+export function ShipLog({
+  world,
+  globalUpdate,
+  setGlobalUpdate,
+}: ShipLogProps) {
   const [text, setText] = useState<string>("");
 
   useEffect(() => {
-    if (player != null) {
-      let shipLog = player.ShipLog.join("\n ");
-      setText(shipLog + "\n\n");
-    }
-  }, [world, player]);
+    let player = world.GetPlayer();
+    let shipLog = player.ShipLog.join("\n ");
+    setText(shipLog + "\n\n");
+  }, [world]);
 
   useEffect(() => {
     let textAreaVar = document.getElementById("textarea_id");

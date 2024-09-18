@@ -121,7 +121,7 @@ export const getTorpedo = (
     ActualPosition: { X: sector.X, Y: sector.Y } as Vector2,
     Quadrant: quadrant,
     Velocity: velocity,
-    Name: starship.IsPlayer ? "(T)" : "(!)",
+    Name: starship.IsPlayer ? "(T)" : "!T!",
     Team: starship.Team,
     Type: "Torpedo",
     IsDead: false,
@@ -266,11 +266,7 @@ export const getWorld = (
         this.SetWorld({ ...this });
       }
 
-      if (!player.IsDead) {
-        player.ShipLog.push(`[END TURN]`);
-        player.ShipLog.push("");
-        player.ShipLog.push("[BEGIN TURN]");
-      } else {
+      if (player.IsDead) {
         player.ShipLog.push("[GAME OVER]");
       }
     },
@@ -449,8 +445,8 @@ export const getWorld = (
   for (let i = 1; i <= 6; i++) {
     world.GameObjects.push({
       Sector: {
-        X: 5 + randomIntFromInterval(-1, 1),
-        Y: 5 + randomIntFromInterval(-1, 1),
+        X: randomIntFromInterval(1, 10),
+        Y: randomIntFromInterval(1, 10),
       } as Vector2,
       Quadrant: populatedPlanetLocations[i - 1],
       Image: ePlanetImages[i - 1],
@@ -686,6 +682,10 @@ const playerUpdateFunction = function (ourShip: Starship, world: World) {
   if (ourShip.ShieldsUp && ourShip.Energy > 25) {
     ourShip.Energy -= 25;
     ourShip.ShipLog.push("[ENERGY] - Shields consumed 25 energy.");
+  }
+
+  if (ourShip.Energy < 1200 / 4) {
+    ourShip.ShipLog.push(`[WARN] - ENERGY LOW`);
   }
 
   if (ourShip.ShieldsUp && ourShip.Energy < 25) {
@@ -1020,18 +1020,19 @@ export const getPlayership = (quadrant: Vector2, sector: Vector2) => {
     ShipLog: [
       "[EARTH TRANSMISSION]",
       "This is admiral Zhukov. The Kron have destroyed our fleet " +
-        "and invaded our space. Their forces took heavy losses but " +
+        "and invaded our space. They seem to be searching for the source of a strange signal. Their forces took heavy losses but " +
         "enough Kron vessels remain to decimate our colonies and " +
         "launch an attack on Earth. Your ship the S.S. NAUTILUS " +
         "is our only remaining battlecruiser. You must stop the " +
         "Kron before they can finish the job. You must save Earth and her colonies.\n",
+    ],
+    RadarLog: [
       "[MISSION OBJECTIVES]",
       "[1] - Destroy all enemy vessels in the quadrant.",
-      "[2] - Provide relief supplies to at least 6 planets (marked with (+) on your map).",
-      "[3] - Discover source of mysterious transmission the Kron are searching for.\n",
-      "[BEGIN TURN]",
+      "[2] - Provide relief supplies to 6 planets marked with (+) on your map).",
+      "[3] - Discover the origin of a mysterious transmission the Kron are tracking.\n",
+      "",
     ],
-    RadarLog: ["Passive radar is active."],
     IsPlayer: true,
     Condition: ShipStatuses.Green,
     Quadrant: quadrant,

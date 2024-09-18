@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { World } from "../../TypeDefinitions";
 import classes from "./MapDisplay.module.css";
 import { getDistance, randomIntFromInterval } from "../../Factory";
+import { ShipStatuses } from "../../TypeDefinitions";
 
 export interface MapDisplayProps {
   world: World;
+  globalUpdate: boolean;
+  setGlobalUpdate: (value: boolean) => void;
   displaySector: boolean;
   displayQuadrant: boolean;
 }
@@ -13,9 +16,11 @@ export function MapDisplay({
   world,
   displayQuadrant,
   displaySector,
+  globalUpdate,
+  setGlobalUpdate,
 }: MapDisplayProps) {
   const [text, setText] = useState<string>("");
-
+  const player = world.GetPlayer();
   const getGridValue = (x: number, y: number): any => {
     if (y === 0 && x === 0) return "   ";
 
@@ -52,6 +57,7 @@ export function MapDisplay({
           world.GetPlayer().ShortRangeScanDate >= world.Stardate ||
           getDistance(foundShip.Sector, world.GetPlayer().Sector) < 4
         ) {
+          player.Condition = ShipStatuses.Red;
           return foundShip.Name;
         }
       }
@@ -61,15 +67,12 @@ export function MapDisplay({
         foundShip.Type === "Starship" &&
         world.GetPlayer().CanDetectShip(foundShip, world, displayQuadrant)
       ) {
-        let player = world.GetPlayer();
-        if (displayQuadrant) {
-          player.RadarLog.push(
-            `TARGET - ${foundShip.Name} - Q[${foundShip.Quadrant.X}-${foundShip.Quadrant.Y}]`
-          );
-        } else {
-          player.RadarLog.push(
-            `TARGET - ${foundShip.Name} - S[${foundShip.Sector.X}-${foundShip.Sector.Y}]`
-          );
+        if (
+          player.Condition !== ShipStatuses.Red &&
+          displaySector &&
+          foundShip.Team !== player.Team
+        ) {
+          player.Condition = ShipStatuses.Yellow;
         }
         return `${foundShip.Name}`;
       }
@@ -95,8 +98,11 @@ export function MapDisplay({
     if (displayQuadrant) {
       map += "\t    QUADRANT MAP\n\n";
     } else {
-      map += "\t    SECTOR MAP\n\n";
+      map += `\t    SECTOR ${world.GetPlayer().Quadrant.X}-${
+        world.GetPlayer().Quadrant.Y
+      }\n\n`;
     }
+
     for (let y = 0; y <= 10; y++) {
       for (let x = 0; x <= 10; x++) {
         map += getGridValue(x, y);
@@ -104,7 +110,18 @@ export function MapDisplay({
       map += "\r\n";
     }
     setText(map);
+    setGlobalUpdate(!globalUpdate);
   }, [world]);
+
+  useEffect(() => {
+    if (
+      !text.includes("K") ||
+      (!text.includes("!T!") &&
+        world.GetPlayer().Condition !== ShipStatuses.Green)
+    ) {
+      world.GetPlayer().Condition = ShipStatuses.Green;
+    }
+  }, [text]);
 
   return (
     <div className={classes.container}>

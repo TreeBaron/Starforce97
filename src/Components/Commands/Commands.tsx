@@ -1,18 +1,32 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Col, Row, Container } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Col,
+  Row,
+  Container,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 import { Arrows } from "./Components/Arrows";
-import { Starship, Vector2, World } from "../../TypeDefinitions";
+import { ShipStatuses, Starship, Vector2, World } from "../../TypeDefinitions";
 import classes from "./Commands.module.css";
 import angleImage from "../../assets/angleImage.png";
 import { equalVectors, fireTorpedo, getDistance } from "../../Factory";
 
 export interface CommandProps {
   world: World;
+  globalUpdate: boolean;
+  setGlobalUpdate: (value: boolean) => void;
   setWorld: (world: World) => void;
-  setPlayer: (player: Starship) => void;
 }
 
-export function Commands({ world, setWorld, setPlayer }: CommandProps) {
+export function Commands({
+  world,
+  setWorld,
+  setGlobalUpdate,
+  globalUpdate,
+}: CommandProps) {
   const [degrees, setDegress] = useState<number>();
   const [worldNeedsUpdate, setWorldNeedsUpdate] = useState<boolean>(false);
   const player = world.GetPlayer();
@@ -64,7 +78,7 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
 
   const LogMovement = () => {
     player.ShipLog.push(
-      `[MOVE] - Ship moved to Q[${player.Quadrant.X}-${player.Quadrant.Y}] S[${player.Sector.X}-${player.Sector.Y}]`
+      `[MOVE] - Ship jumped to Q[${player.Quadrant.X}-${player.Quadrant.Y}] S[${player.Sector.X}-${player.Sector.Y}]`
     );
   };
 
@@ -103,7 +117,6 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
     player.Sector = getCleanCoords(player.Sector, undefined, undefined, () => {
       MoveUpQ();
     });
-    LogMovement();
     world.Update();
   };
   const MoveDownS = () => {
@@ -118,7 +131,6 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
         MoveDownQ();
       }
     );
-    LogMovement();
     world.Update();
   };
   const MoveLeftS = () => {
@@ -127,7 +139,6 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
     player.Sector = getCleanCoords(player.Sector, undefined, () => {
       MoveLeftQ();
     });
-    LogMovement();
     world.Update();
   };
   const MoveRightS = () => {
@@ -136,10 +147,38 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
     player.Sector = getCleanCoords(player.Sector, () => {
       MoveRightQ();
     });
-    LogMovement();
     world.Update();
   };
   const displayDegrees = 360 - (degrees || 0);
+
+  const inLaserRange = () => {
+    let targets = world.GameObjects.filter(
+      (x) =>
+        x.Quadrant &&
+        equalVectors(x.Quadrant, player.Quadrant) &&
+        x.Team != player.Team &&
+        x.Type === "Starship"
+    );
+
+    if (targets.length === 0) {
+      return false;
+    }
+
+    // Note distance to PLAYER
+    let nearestTarget = targets.sort((a, b) => {
+      return (
+        getDistance(a.Sector, player.Sector) -
+        getDistance(b.Sector, player.Sector)
+      );
+    })[0];
+
+    if (getDistance(nearestTarget.Sector, player.Sector) > 4) {
+      return false;
+    }
+
+    setGlobalUpdate(globalUpdate);
+    return true;
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -149,64 +188,113 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
         <Row className={classes.noMarginNoPadding}>
           <Col className={classes.noMarginNoPadding}>
             <b>NAV-S</b>
-            <Arrows
-              world={world}
-              isGreen={true}
-              up={MoveDownS}
-              down={MoveUpS}
-              left={MoveLeftS}
-              right={MoveRightS}
-              disabled={player.Energy < 5 || player.CanMoveSectors === false}
-            />
+            <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props: any) => (
+                <Tooltip id="button-tooltip" {...props}>
+                  -5E moves ship in the sector map
+                </Tooltip>
+              )}
+            >
+              <span>
+                <Arrows
+                  world={world}
+                  isGreen={true}
+                  up={MoveDownS}
+                  down={MoveUpS}
+                  left={MoveLeftS}
+                  right={MoveRightS}
+                  disabled={
+                    player.Energy < 5 || player.CanMoveSectors === false
+                  }
+                />
+              </span>
+            </OverlayTrigger>
             <Container className={`${classes.downScale} ${classes.marginTop}`}>
               <Row>
                 <Col>
                   {" "}
-                  <Button
-                    onClick={() => {
-                      world.GetPlayer().LongRangeScanDate = world.Stardate + 1;
-                      world
-                        .GetPlayer()
-                        .ShipLog.push(
-                          "[SCAN] - Ship conducted long-range scan."
-                        );
-                      world.Update();
-                    }}
-                    disabled={player.CanLRS === false}
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={(props: any) => (
+                      <Tooltip id="button-tooltip" {...props}>
+                        long range scan checks nearby sectors for enemies but
+                        reveals your position
+                      </Tooltip>
+                    )}
                   >
-                    LRS
-                  </Button>
+                    <Button
+                      onClick={() => {
+                        world.GetPlayer().LongRangeScanDate =
+                          world.Stardate + 1;
+                        world
+                          .GetPlayer()
+                          .ShipLog.push(
+                            "[SCAN] - Ship conducted long-range scan."
+                          );
+                        world.Update();
+                      }}
+                      disabled={player.CanLRS === false}
+                      className={`${classes.longRangeScan}`}
+                    >
+                      L.R.S.
+                    </Button>
+                  </OverlayTrigger>
                 </Col>
                 <Col>
-                  <Button
-                    onClick={() => {
-                      world.GetPlayer().ShortRangeScanDate = world.Stardate + 1;
-                      world
-                        .GetPlayer()
-                        .ShipLog.push(
-                          "[SCAN] - Ship conducted short-range scan."
-                        );
-                      world.Update();
-                    }}
-                    disabled={player.CanSRS === false}
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={(props: any) => (
+                      <Tooltip id="button-tooltip" {...props}>
+                        checks this sector for enemies or torpedoes but reveals
+                        your position
+                      </Tooltip>
+                    )}
                   >
-                    SRS
-                  </Button>
+                    <Button
+                      onClick={() => {
+                        world.GetPlayer().ShortRangeScanDate =
+                          world.Stardate + 1;
+                        world
+                          .GetPlayer()
+                          .ShipLog.push(
+                            "[SCAN] - Ship conducted short-range scan."
+                          );
+                        world.Update();
+                      }}
+                      disabled={player.CanSRS === false}
+                    >
+                      Scan
+                    </Button>
+                  </OverlayTrigger>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Button
-                    className={`${classes.marginTop}`}
-                    onClick={() => {
-                      player.ShipLog.push(
-                        "[WAIT] - Rigging for silent running captain."
-                      );
-                      world.Update();
-                    }}
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={(props: any) => (
+                      <Tooltip id="button-tooltip" {...props}>
+                        +10E and low chance of detection
+                      </Tooltip>
+                    )}
                   >
-                    WAIT
-                  </Button>
+                    <Button
+                      className={`${classes.marginTop}`}
+                      onClick={() => {
+                        player.ShipLog.push(
+                          "[WAIT] - Rigging for silent running captain."
+                        );
+                        world.Update();
+                      }}
+                    >
+                      WAIT
+                    </Button>
+                  </OverlayTrigger>
                 </Col>
               </Row>
             </Container>
@@ -216,7 +304,7 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
               <Form.Group
                 className={`mb-3 ${classes.torpText} ${classes.myButton}`}
               >
-                <Form.Label>FIRING ANGLE </Form.Label>
+                <Form.Label>TORPEDO FIRING ANGLE </Form.Label>
                 <Form.Control
                   type="number"
                   placeholder="0"
@@ -239,91 +327,144 @@ export function Commands({ world, setWorld, setPlayer }: CommandProps) {
                 style={{ rotate: `z ${displayDegrees}deg` }}
               />
             </Form>
-            <Button
-              disabled={
-                player.Torpedoes <= 0 || player.CanFireTorpedoes === false
-              }
-              className={`${classes.red} ${classes.myButton}  ${classes.torpButton}`}
-              onClick={() => {
-                let torpedo = fireTorpedo(world.GetPlayer(), degrees || 0);
-                player.Torpedoes -= 1;
-                setWorld({
-                  ...world,
-                  GameObjects: [...world.GameObjects].concat(torpedo),
-                });
-                setWorldNeedsUpdate(true);
-              }}
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props: any) => (
+                <Tooltip id="button-tooltip" {...props}>
+                  fires a torpedo in the direction of the white arrow torpedoes
+                  can be dodged but guarantee a kill if they hit an enemy
+                </Tooltip>
+              )}
             >
-              <b>FIRE TORPEDO</b>
-            </Button>
-            <Button
-              className={`${classes.red} ${classes.myButton} ${classes.laserButton}`}
-              onClick={() => {
-                let targets = world.GameObjects.filter(
-                  (x) =>
-                    x.Quadrant &&
-                    equalVectors(x.Quadrant, player.Quadrant) &&
-                    x.Team != player.Team &&
-                    x.Type === "Starship"
-                );
-
-                if (targets.length === 0) {
-                  player.ShipLog.push("[ERR] - No targets in range sir!");
-                  setPlayer({ ...player });
-                  return;
+              <Button
+                disabled={
+                  player.Torpedoes <= 0 || player.CanFireTorpedoes === false
                 }
+                className={`${classes.red} ${classes.myButton}  ${classes.torpButton}`}
+                onClick={() => {
+                  let torpedo = fireTorpedo(world.GetPlayer(), degrees || 0);
+                  player.Torpedoes -= 1;
+                  setWorld({
+                    ...world,
+                    GameObjects: [...world.GameObjects].concat(torpedo),
+                  });
+                  setWorldNeedsUpdate(true);
+                }}
+              >
+                <b>FIRE TORPEDO</b>
+              </Button>
+            </OverlayTrigger>
+            {inLaserRange() && (
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props: any) => (
+                  <Tooltip id="button-tooltip" {...props}>
+                    costs 150E and has a chance to disable or destroy an enemy
+                    ship lasers do not need to be aimed unlike torpedoes
+                  </Tooltip>
+                )}
+              >
+                <Button
+                  className={`tertiaryBackground ${classes.myButton} ${classes.laserButton}`}
+                  onClick={() => {
+                    let targets = world.GameObjects.filter(
+                      (x) =>
+                        x.Quadrant &&
+                        equalVectors(x.Quadrant, player.Quadrant) &&
+                        x.Team != player.Team &&
+                        x.Type === "Starship"
+                    );
 
-                // Note distance to PLAYER
-                let nearestTarget = targets.sort((a, b) => {
-                  return (
-                    getDistance(a.Sector, player.Sector) -
-                    getDistance(b.Sector, player.Sector)
-                  );
-                })[0];
+                    if (targets.length === 0) {
+                      player.ShipLog.push("[ERR] - No targets in range sir!");
+                      setGlobalUpdate(globalUpdate);
+                      return;
+                    }
 
-                if (getDistance(nearestTarget.Sector, player.Sector) > 4) {
-                  player.ShipLog.push("Nearest target is out of range sir.");
-                  setPlayer({ ...player });
-                  return;
-                }
+                    // Note distance to PLAYER
+                    let nearestTarget = targets.sort((a, b) => {
+                      return (
+                        getDistance(a.Sector, player.Sector) -
+                        getDistance(b.Sector, player.Sector)
+                      );
+                    })[0];
 
-                nearestTarget.TakeDamage(player);
+                    if (getDistance(nearestTarget.Sector, player.Sector) > 4) {
+                      player.ShipLog.push(
+                        "Nearest target is out of range sir."
+                      );
+                      setGlobalUpdate(globalUpdate);
+                      return;
+                    }
 
-                player.Energy -= 150;
+                    nearestTarget.TakeDamage(player);
 
-                world.Update();
-              }}
-              disabled={player.CanFireLasers === false || player.Energy < 150}
-            >
-              <b>LASER BURST</b>
-            </Button>
+                    player.Energy -= 150;
+
+                    world.Update();
+                  }}
+                  disabled={
+                    player.CanFireLasers === false ||
+                    player.Energy < 150 ||
+                    !inLaserRange()
+                  }
+                >
+                  <b>LASER BURST</b>
+                </Button>
+              </OverlayTrigger>
+            )}
           </Col>
           <Col className={classes.noMarginNoPadding}>
             <b>NAV-Q</b>
-            <Arrows
-              world={world}
-              isPurple={true}
-              up={MoveDownQ}
-              down={MoveUpQ}
-              left={MoveLeftQ}
-              right={MoveRightQ}
-              disabled={
-                player.Energy < 100 || player.CanMoveQuadrants === false
-              }
-            />
-            <div className={classes.marginTop} />
-            <Button
-              className={`${player.ShieldsUp ? "color3" : "color1"} ${
-                classes.myButton
-              } ${classes.downScale}`}
-              onClick={() => {
-                player.ShieldsUp = !player.ShieldsUp;
-                player.Condition = "RED";
-                setWorld({ ...world });
-              }}
+            <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props: any) => (
+                <Tooltip id="button-tooltip" {...props}>
+                  -100E warps ship to a new quadrant position
+                </Tooltip>
+              )}
             >
-              {player.ShieldsUp ? "Lower Shields" : "Raise Shields"}
-            </Button>
+              <span>
+                <Arrows
+                  world={world}
+                  isPurple={true}
+                  up={MoveDownQ}
+                  down={MoveUpQ}
+                  left={MoveLeftQ}
+                  right={MoveRightQ}
+                  disabled={
+                    player.Energy < 100 || player.CanMoveQuadrants === false
+                  }
+                />
+              </span>
+            </OverlayTrigger>
+            <div className={classes.marginTop} />
+            <OverlayTrigger
+              placement="left"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props: any) => (
+                <Tooltip id="button-tooltip" {...props}>
+                  shields provide some protection against lasers but do nothing
+                  against torpedoes
+                </Tooltip>
+              )}
+            >
+              <Button
+                className={`${player.ShieldsUp ? "color3" : "color1"} ${
+                  classes.myButton
+                } ${classes.downScale}`}
+                onClick={() => {
+                  player.ShieldsUp = !player.ShieldsUp;
+                  player.Condition = ShipStatuses.Red;
+                  setWorld({ ...world });
+                }}
+              >
+                {player.ShieldsUp ? "Lower Shields" : "Raise Shields"}
+              </Button>
+            </OverlayTrigger>
           </Col>
         </Row>
         <Row className={classes.noMarginNoPadding}>

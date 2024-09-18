@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShipStatuses } from "../../TypeDefinitions";
 import { Starship } from "../../TypeDefinitions";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
@@ -13,7 +13,8 @@ export interface DamageDisplayProps {
   starship: Starship;
   world: World;
   children: any;
-  setPlayer: (player: Starship) => void;
+  globalUpdate: boolean;
+  setGlobalUpdate: (value: boolean) => void;
 }
 
 export interface ConditionProps {
@@ -32,12 +33,14 @@ const Condition = ({ condition }: ConditionProps) => {
 export function StarshipDisplay({
   starship,
   world,
-  setPlayer,
   children,
+  setGlobalUpdate,
+  globalUpdate,
 }: DamageDisplayProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const player = world.GetPlayer();
   if (player === null) return;
+  const [maxTorpedoes, setMaxTorpedoes] = useState<number>(player.Torpedoes);
 
   let planet = world.GameObjects.find(
     (x: any) =>
@@ -53,7 +56,7 @@ export function StarshipDisplay({
     player.ShipLog.push(
       "\n[DISCOVERY] - We have noted this place in our charts and submitted our scans to HQ."
     );
-    setPlayer(player);
+    setGlobalUpdate(!globalUpdate);
   }
 
   return (
@@ -90,7 +93,7 @@ export function StarshipDisplay({
                           player.ShipLog.push(
                             `[MISSION] - Delivered supplies to ${planet.Detail}.`
                           );
-                          setPlayer({ ...player });
+                          setGlobalUpdate(!globalUpdate);
                           planet.ReceivedRelief = true;
                           planet.Name = " O ";
                         }}
@@ -133,18 +136,20 @@ export function StarshipDisplay({
       <div className={`secondaryBackground ${classes.shipDisplay}`}>
         <Container>
           <Row>
-            <Col className={classes.myColumn}>CONDITION</Col>
+            <Col className={classes.myColumn}>ALERT STATUS</Col>
             <Col className={classes.myColumn}>
               <Condition condition={starship.Condition} />
             </Col>
           </Row>
           <Row>
             <Col className={classes.myColumn}>ENERGY</Col>
-            <Col className={classes.myColumn}>{starship.Energy}</Col>
+            <Col className={classes.myColumn}>{starship.Energy} / 1200</Col>
           </Row>
           <Row>
             <Col className={classes.myColumn}>TORPEDOES</Col>
-            <Col className={classes.myColumn}>{starship.Torpedoes}</Col>
+            <Col className={classes.myColumn}>
+              {starship.Torpedoes} / {maxTorpedoes}
+            </Col>
           </Row>
           <Row>
             <Col className={classes.myColumn}>SHIELDS</Col>
@@ -155,6 +160,7 @@ export function StarshipDisplay({
         </Container>
       </div>
       <div className={classes.marginBottom} />
+      <div className="globalUpdate">{globalUpdate}</div>
     </div>
   );
 }

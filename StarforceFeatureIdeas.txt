@@ -1,0 +1,5 @@
+1. Change radar log to text adventure stuff.
+4. Laser button changes colors when in range. Make it clear lasers will auto-target via ship log.
+5. Objective UI showing how close to completion and how many remaining enemies.
+7. Stat screen + score when game over happens.
+10. Target specific enemy systems?

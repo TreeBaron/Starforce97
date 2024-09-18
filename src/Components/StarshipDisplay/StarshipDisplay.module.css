@@ -118,7 +118,7 @@ div > div > .shipDisplay {
 }
 
 .modal {
-  z-index: 99999 !important;
+  z-index: 10 !important;
   font-size: 12px !important;
 }
 
@@ -135,7 +135,7 @@ div > div > .shipDisplay {
   font-style: oblique;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   border-radius: 4px;
-  z-index: 999;
+  z-index: 10;
 }
 
 .blinkingBoxWhite {

@@ -23,6 +23,13 @@
   overflow: hidden;
 }
 
+.globalUpdate {
+  z-index: -1000 !important;
+  scale: 0.01 !important;
+  font-size: 1px !important;
+  color: transparent !important;
+}
+
 .smallPadding {
   margin: 15px;
 }
@@ -37,6 +44,14 @@
   font-size: 11px !important;
   line-height: 0.5rem !important;
   margin-left: 1px !important;
+}
+
+.helpButtonInGame {
+  position: absolute !important;
+  right: 10px !important;
+  bottom: 10px !important;
+  z-index: 999999 !important;
+  border: 1px white solid !important;
 }
 
 .blackBackground {
