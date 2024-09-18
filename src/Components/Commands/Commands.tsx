@@ -30,6 +30,7 @@ export function Commands({
   const [degrees, setDegress] = useState<number>();
   const [worldNeedsUpdate, setWorldNeedsUpdate] = useState<boolean>(false);
   const player = world.GetPlayer();
+  const tooltipTime = 1500;
 
   useEffect(() => {
     if (worldNeedsUpdate) {
@@ -190,7 +191,7 @@ export function Commands({
             <b>NAV-S</b>
             <OverlayTrigger
               placement="left"
-              delay={{ show: 800, hide: 400 }}
+              delay={{ show: tooltipTime, hide: 400 }}
               overlay={(props: any) => (
                 <Tooltip id="button-tooltip" {...props}>
                   -5E moves ship in the sector map
@@ -217,7 +218,7 @@ export function Commands({
                   {" "}
                   <OverlayTrigger
                     placement="left"
-                    delay={{ show: 800, hide: 400 }}
+                    delay={{ show: tooltipTime, hide: 400 }}
                     overlay={(props: any) => (
                       <Tooltip id="button-tooltip" {...props}>
                         long range scan checks nearby sectors for enemies but
@@ -246,7 +247,7 @@ export function Commands({
                 <Col>
                   <OverlayTrigger
                     placement="left"
-                    delay={{ show: 800, hide: 400 }}
+                    delay={{ show: tooltipTime, hide: 400 }}
                     overlay={(props: any) => (
                       <Tooltip id="button-tooltip" {...props}>
                         checks this sector for enemies and torpedoes but reveals
@@ -276,7 +277,7 @@ export function Commands({
                 <Col>
                   <OverlayTrigger
                     placement="left"
-                    delay={{ show: 800, hide: 400 }}
+                    delay={{ show: tooltipTime, hide: 400 }}
                     overlay={(props: any) => (
                       <Tooltip id="button-tooltip" {...props}>
                         +10E and low chance of detection
@@ -329,7 +330,7 @@ export function Commands({
             </Form>
             <OverlayTrigger
               placement="top"
-              delay={{ show: 800, hide: 400 }}
+              delay={{ show: tooltipTime, hide: 400 }}
               overlay={(props: any) => (
                 <Tooltip id="button-tooltip" {...props}>
                   fires a torpedo in the direction of the white arrow torpedoes
@@ -358,7 +359,7 @@ export function Commands({
             {inLaserRange() && (
               <OverlayTrigger
                 placement="top"
-                delay={{ show: 800, hide: 400 }}
+                delay={{ show: tooltipTime, hide: 400 }}
                 overlay={(props: any) => (
                   <Tooltip id="button-tooltip" {...props}>
                     costs 150E and has a chance to disable or destroy an enemy
@@ -420,7 +421,7 @@ export function Commands({
             <b>NAV-Q</b>
             <OverlayTrigger
               placement="right"
-              delay={{ show: 800, hide: 400 }}
+              delay={{ show: tooltipTime, hide: 400 }}
               overlay={(props: any) => (
                 <Tooltip id="button-tooltip" {...props}>
                   -100E warps ship to a new quadrant position
@@ -444,7 +445,7 @@ export function Commands({
             <div className={classes.marginTop} />
             <OverlayTrigger
               placement="right"
-              delay={{ show: 800, hide: 400 }}
+              delay={{ show: tooltipTime, hide: 400 }}
               overlay={(props: any) => (
                 <Tooltip id="button-tooltip" {...props}>
                   shields provide some protection against lasers but do nothing
